@@ -48,9 +48,9 @@ pub fn initial_signup_ui() -> SignupUi {
 }
 
 pub type LoginUi {
-  LoginUi(email: String, password: String)
+  LoginUi(email: String, password: String, error: option.Option(String))
 }
 
 pub fn initial_login_ui() -> LoginUi {
-  LoginUi(email: "", password: "")
+  LoginUi(email: "", password: "", error: option.None)
 }

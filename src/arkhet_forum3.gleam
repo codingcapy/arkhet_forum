@@ -81,11 +81,13 @@ fn update(
       #(Model(..model), effect.none())
     }
     message.UserChangedLoginEmail(email) -> {
-      let login_ui = model.LoginUi(..model.login_ui, email: email)
+      let login_ui =
+        model.LoginUi(..model.login_ui, email: email, error: option.None)
       #(Model(..model, login_ui:), effect.none())
     }
     message.UserChangedLoginPassword(password) -> {
-      let login_ui = model.LoginUi(..model.login_ui, password: password)
+      let login_ui =
+        model.LoginUi(..model.login_ui, password: password, error: option.None)
       #(Model(..model, login_ui:), effect.none())
     }
     message.UserSubmittedLogin -> {
@@ -107,8 +109,12 @@ fn update(
       )
     }
     message.ApiLoggedInUser(Error(error)) -> {
-      io.println("Login failed")
-      #(model, effect.none())
+      let login_ui =
+        model.LoginUi(
+          ..model.login_ui,
+          error: option.Some("Invalid email or password"),
+        )
+      #(Model(..model, login_ui:), effect.none())
     }
     message.Logout -> {
       #(
@@ -182,7 +188,7 @@ fn view(model: Model) {
             ),
           ])
         Signup -> signup.view(model)
-        Login -> login.view()
+        Login -> login.view(model)
       },
     ],
   )

@@ -1,9 +1,11 @@
+import gleam/option
 import lustre/attribute.{class}
 import lustre/element/html
 import lustre/event
 import message
+import model
 
-pub fn view() {
+pub fn view(model: model.Model) {
   html.div([attribute.class("pt-[50px] mx-auto w-[300px] p-2")], [
     html.div(
       [attribute.class("text-center text-[#9253E4] font-bold mb-10 text-xl")],
@@ -11,6 +13,14 @@ pub fn view() {
         html.text("LOGIN"),
       ],
     ),
+    case model.login_ui.error {
+      option.Some(msg) ->
+        html.div([class("mb-4 text-sm text-red-400 text-center")], [
+          html.text(msg),
+        ])
+
+      option.None -> html.text("")
+    },
     html.form(
       [
         class("flex flex-col"),
