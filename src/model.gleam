@@ -40,11 +40,16 @@ pub fn route_from_path(path: List(String)) -> Route {
 }
 
 pub type SignupUi {
-  SignupUi(username: String, email: String, password: String)
+  SignupUi(
+    username: String,
+    email: String,
+    password: String,
+    error: option.Option(String),
+  )
 }
 
 pub fn initial_signup_ui() -> SignupUi {
-  SignupUi(username: "", email: "", password: "")
+  SignupUi(username: "", email: "", password: "", error: option.None)
 }
 
 pub type LoginUi {

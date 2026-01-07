@@ -1,3 +1,4 @@
+import gleam/option
 import lustre/attribute.{class, value}
 import lustre/element/html
 import lustre/event
@@ -9,6 +10,13 @@ pub fn view(model: Model) {
     html.div([class("text-center text-[#9253E4] font-bold mb-10 text-xl")], [
       html.text("SIGNUP"),
     ]),
+    case model.signup_ui.error {
+      option.Some(msg) ->
+        html.div([class("mb-4 text-sm text-red-400 text-center")], [
+          html.text(msg),
+        ])
+      option.None -> html.text("")
+    },
     html.form(
       [
         class("flex flex-col"),

@@ -51,11 +51,17 @@ fn update(
       #(Model(..model, signup_ui:), effect.none())
     }
     message.UserChangedSignupEmail(email) -> {
-      let signup_ui = model.SignupUi(..model.signup_ui, email: email)
+      let signup_ui =
+        model.SignupUi(..model.signup_ui, email: email, error: option.None)
       #(Model(..model, signup_ui:), effect.none())
     }
     message.UserChangedSignupPassword(password) -> {
-      let signup_ui = model.SignupUi(..model.signup_ui, password: password)
+      let signup_ui =
+        model.SignupUi(
+          ..model.signup_ui,
+          password: password,
+          error: option.None,
+        )
       #(Model(..model, signup_ui:), effect.none())
     }
     message.UserSubmittedSignup -> {
@@ -77,8 +83,12 @@ fn update(
       )
     }
     message.ApiCreatedUser(Error(error)) -> {
-      echo error
-      #(Model(..model), effect.none())
+      let signup_ui =
+        model.SignupUi(
+          ..model.signup_ui,
+          error: option.Some("An account with this email already exists"),
+        )
+      #(Model(..model, signup_ui:), effect.none())
     }
     message.UserChangedLoginEmail(email) -> {
       let login_ui =
